@@ -13,13 +13,15 @@ $(function(){
 		_width = 150;
 	}
 	var flag = false;
+	var priKey = "";
 	$.each(columns,function(index,item){
 		if(item.columnKey=="PRI"){
 			flag = true;
+			priKey = item.columnName;
 		}
 		var col = {
 			"field":item.columnName,
-			"title":item.columnName,
+			"title":item.showComment,
 			"width":_width+"px",
 			"align":"center"
 		};
@@ -44,6 +46,16 @@ $(function(){
 			width:800,
 			height:500,
 			title:"查看表详情"
+		});
+	}).on("click","a[name='add']",function(){
+		var jsonData=$("div.search_form",mainDiv).toJSON();
+		$.EasyUI.Window({
+			url:"/table/add",
+			data:jsonData,
+			type:"get",
+			width:800,
+			height:500,
+			title:"添加表"+jsonData.tableName+"数据"
 		});
 	}).on("click","a[name='export']",function(){
 		var jsonData=$("div.search_form",mainDiv).toJSON();
@@ -85,6 +97,18 @@ $(function(){
 			rowStyler:function(){
 				return "height:35px";
 			},onDblClickRow :function(rowIndex,rowData){
+				console.log(rowData);
+				var jsonData=$("div.search_form",mainDiv).toJSON();
+				jsonData.priKey = priKey;
+				jsonData.priValue = eval("rowData."+priKey)
+				$.EasyUI.Window({
+					url:"/table/data",
+					data:jsonData,
+					type:"get",
+					width:800,
+					height:500,
+					title:"添加表"+jsonData.tableName+"数据"
+				});
 			},
 			columns: columnArr
 		});

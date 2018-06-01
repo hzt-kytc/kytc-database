@@ -84,8 +84,9 @@
 		<input name="database" value="${table.data.tableSchema }" type="hidden"/>
 		<input name="tableName" value="${table.data.tableName }" type="hidden"/>
 		<input class="easyui-textbox" style="width:200px;height:32px" name="columnValue"/>
-		<a name="search" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">Search</a>
-		<a name="reset" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" style="width:80px">Reload</a>
+		<a name="search" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
+		<a name="reset" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" style="width:80px">重置</a>
+		<a name="add" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px">添加</a>
 	</div>
 	<div class="list" style="overflow-y:auto;">
 		<div class="data" style="width:100%;"></div>

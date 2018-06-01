@@ -1,9 +1,12 @@
 package com.kytc.database.controller;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.kytc.database.dto.ColumnDTO;
 import com.kytc.database.service.ColumnService;
 import com.kytc.database.service.TableService;
+import com.kytc.database.utils.DatabaseUtils;
 import com.kytc.database.vo.TableVO;
 import com.kytc.dto.PageDTO;
 import com.kytc.dto.ResultDTO;
@@ -36,6 +40,7 @@ public class TableController {
 	public String index(String database, String tableName, Model model){
 		model.addAttribute("table", tableServiceImpl.detail(database, tableName));
 		PageDTO<ColumnDTO> page = columnServiceImpl.list(database, tableName);
+		DatabaseUtils.init(page, tableName);
 		model.addAttribute("columns", page);
 		model.addAttribute("column", JsonUtils.toJSON(page.getRows()));
 		return ROOT + "index";
@@ -51,6 +56,48 @@ public class TableController {
 		model.addAttribute("database", database);
 		model.addAttribute("tableName", tableName);
 		return ROOT + "detail";
+	}
+	@RequestMapping(value="data",method=RequestMethod.GET)
+	public String data(String database, String tableName, String priKey,String priValue, Model model){
+		System.out.println(database+"   "+tableName);
+		model.addAttribute("database", database);
+		model.addAttribute("tableName", tableName);
+		PageDTO<ColumnDTO> page = columnServiceImpl.list(database, tableName);
+		DatabaseUtils.init(page, tableName);
+		model.addAttribute("columns", page);
+		model.addAttribute("result", tableServiceImpl.dataDetail(database, tableName, priKey, priValue));
+		return ROOT + "data";
+	}
+	@RequestMapping(value="add",method=RequestMethod.GET)
+	public String addGet(String database, String tableName, Model model){
+		System.out.println(database+"   "+tableName);
+		model.addAttribute("database", database);
+		model.addAttribute("tableName", tableName);
+		PageDTO<ColumnDTO> page = columnServiceImpl.list(database, tableName);
+		DatabaseUtils.init(page, tableName);
+		model.addAttribute("result", page);
+		return ROOT + "add";
+	}
+	private Map<String,Object> getRequestMap(HttpServletRequest request){
+		Enumeration<String> keyEnum = request.getParameterNames();
+		Map<String,Object> map = new HashMap<String,Object>();
+		while(keyEnum.hasMoreElements()){
+			String key = keyEnum.nextElement();
+			map.put(key, request.getParameter(key));
+		}
+		return map;
+	}
+	@RequestMapping(value="add",method=RequestMethod.POST)
+	@ResponseBody
+	public String addPost(HttpServletRequest request){
+		Map<String,Object> map = getRequestMap(request);
+//		System.out.println(database+"   "+tableName);
+//		model.addAttribute("database", database);
+//		model.addAttribute("tableName", tableName);
+//		PageDTO<ColumnDTO> page = columnServiceImpl.list(database, tableName);
+//		DatabaseUtils.init(page, tableName);
+//		model.addAttribute("result", page);
+		return ROOT + "add";
 	}
 	@RequestMapping(value="column",method=RequestMethod.POST)
 	@ResponseBody
