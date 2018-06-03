@@ -28,12 +28,12 @@ $(function(){
 		if(item.dataType=='datetime'){
 			col.formatter = function(value){
 				return $.toDateTime(value, 'yyyy-MM-dd hh:mm:ss');
-			}
+			};
 		}
-		columnArr1.push(col)
+		columnArr1.push(col);
 	});
 	if(!flag){
-		$.EasyUI.message("该表没有主键","e")
+		$.EasyUI.message("该表没有主键","e");
 	}
 	columnArr.push(columnArr1);
 	mainDiv.on("click","a[name='detail']",function(){
@@ -59,16 +59,16 @@ $(function(){
 		});
 	}).on("click","a[name='export']",function(){
 		var jsonData=$("div.search_form",mainDiv).toJSON();
-		console.log(jsonData)
+		console.log(jsonData);
 		$.ajax({
 			url:"/table/export",
 			type:"post",
 			data:jsonData,
 			dataType:"json",
 			success:function(data){
-				console.log(data)
+				console.log(data);
 			}
-		})
+		});
 	}).on("click","a[name='search']",function(){
 		mainDivList.datagrid('reload',$("div.search_form",mainDiv).toJSON());
 	}).on("click","a[name='reset']",function(){
@@ -100,7 +100,7 @@ $(function(){
 				console.log(rowData);
 				var jsonData=$("div.search_form",mainDiv).toJSON();
 				jsonData.priKey = priKey;
-				jsonData.priValue = eval("rowData."+priKey)
+				jsonData.priValue = eval("rowData."+priKey);
 				$.EasyUI.Window({
 					url:"/table/data",
 					data:jsonData,
@@ -113,4 +113,4 @@ $(function(){
 			columns: columnArr
 		});
 	}
-})
+});

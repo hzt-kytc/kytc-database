@@ -13,7 +13,7 @@ $(function(){
 		}else{
 			return "event";
 		}
-	}
+	};
 	$("ul[name='database_tree']",mainDiv).tree({  
         onClick:function(node){  
         	var isLeaf = $("ul[name='database_tree']",mainDiv).tree('isLeaf', node.target);
@@ -30,11 +30,11 @@ $(function(){
         			dataType:"html",
         			success:function(data){
         				var title = nodeParent.text +" \""+tableName + "\" 详情";
-        				$("div.main_content",mainDiv).closest("div.layout-panel-center").find("div.panel-header div.panel-title").html(title)
+        				$("div.main_content",mainDiv).closest("div.layout-panel-center").find("div.panel-header div.panel-title").html(title);
         				$("div.main_content",mainDiv).html(data);
-        				$.parser.parse($("div.main_content",mainDiv))
+        				$.parser.parse($("div.main_content",mainDiv));
         			}
-        		})
+        		});
         	}
         },
         onExpand:function(node){
@@ -55,19 +55,49 @@ $(function(){
             						var data_ = {};
             						data_.id = index;
             						data_.text = item;
-            						dataArr.push(data_)
-            					})
-            					$(node.target).closest("li").find("ul").show()
+            						dataArr.push(data_);
+            					});
+            					$(node.target).closest("li").find("ul").show();
             					$("ul[name='database_tree']",mainDiv).tree('append', {
             						parent:node.target,
             						data:dataArr
             					});
             				}
             			}
-            		})
+            		});
         		}
         	}else{
         	}
         }
     });  
-})
+	$("ul[name='search_tree']",mainDiv).tree({  
+        onClick:function(node){  
+        },
+        onExpand:function(node){
+        },onBeforeExpand:function(node,param){
+        },onContextMenu:function(e, node){
+        	e.preventDefault();
+    		// select the node
+    		$('#tt').tree('select', node.target);
+    		// display context menu
+    		$('#mm').menu('show', {
+    			left: e.pageX,
+    			top: e.pageY
+    		});
+        }
+    });  
+	mainDiv.off().on("click","div[name='add']",function(){
+		console.log("add");
+		$.ajax({
+			type:"get",
+			url:"/query/index",
+			dataType:"html",
+			success:function(data){
+				var title = "查询";
+				$("div.main_content",mainDiv).closest("div.layout-panel-center").find("div.panel-header div.panel-title").html(title);
+				$("div.main_content",mainDiv).html(data);
+				$.parser.parse($("div.main_content",mainDiv));
+			}
+		});
+	});
+});

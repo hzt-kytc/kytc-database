@@ -1,5 +1,6 @@
 package com.kytc.database.controller;
 
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -89,15 +90,18 @@ public class TableController {
 	}
 	@RequestMapping(value="add",method=RequestMethod.POST)
 	@ResponseBody
-	public String addPost(HttpServletRequest request){
+	public ResultDTO<String> addPost(HttpServletRequest request){
 		Map<String,Object> map = getRequestMap(request);
-//		System.out.println(database+"   "+tableName);
-//		model.addAttribute("database", database);
-//		model.addAttribute("tableName", tableName);
-//		PageDTO<ColumnDTO> page = columnServiceImpl.list(database, tableName);
-//		DatabaseUtils.init(page, tableName);
-//		model.addAttribute("result", page);
-		return ROOT + "add";
+		PageDTO<ColumnDTO> page = columnServiceImpl.list(""+map.get("database"), ""+map.get("tableName"));
+		for(ColumnDTO dto:page.getRows()){
+			if(dto.getColumnName().trim().equals("is_deleted")){
+				map.put("is_deleted", 0);
+			}
+			if(dto.getColumnName().trim().equals("gmt_create")||dto.getColumnName().trim().equals("gmt_modified")){
+				map.put(dto.getColumnName(), new Date());
+			}
+		}
+		return tableServiceImpl.addData(map);
 	}
 	@RequestMapping(value="column",method=RequestMethod.POST)
 	@ResponseBody
