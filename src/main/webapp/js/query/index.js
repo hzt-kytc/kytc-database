@@ -44,7 +44,6 @@ $(function(){
 			dataType:"json",
 			type:"get",
 			success:function(data){
-				console.log(data)
 				Highcharts.chart('container', {
 				    chart: {
 				        type: 'line'
@@ -56,11 +55,14 @@ $(function(){
 				        text: 'Source: 来自数据库的统计'
 				    },
 				    xAxis: {
-				        categories: data.category
+				        categories: data.category,
+				        title: {
+				            text: '日期'
+				        }
 				    },
 				    yAxis: {
 				        title: {
-				            text: 'Temperature (°C)'
+				            text: '注册人数'
 				        }
 				    },
 				    plotOptions: {
