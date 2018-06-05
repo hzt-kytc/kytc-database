@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/easyui/locale/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/easyui/common.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/Highcharts-6.1.0/code/highcharts.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/Highcharts-6.1.0/code/modules/series-label.js"></script>
 	<script src="${pageContext.request.contextPath}/Highcharts-6.1.0/code/modules/exporting.js"></script>
 	<script src="${pageContext.request.contextPath}/Highcharts-6.1.0/code/modules/export-data.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/common.js"></script>

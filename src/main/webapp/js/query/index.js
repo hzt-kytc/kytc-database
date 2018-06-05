@@ -1,8 +1,7 @@
 $(function(){
 	var mainDiv = $("#database_query_main_div");
 	var mainDivList = $("div.list div.data",mainDiv);
-	mainDiv.off().on("click","a[name='action']",function(){
-		var sql = $("textarea[name='sql']",mainDiv).val();
+	var initGrid1 = function(sql){
 		$.ajax({
 			url:"/query/column",
 			data:{"sql":sql},
@@ -36,33 +35,34 @@ $(function(){
 				}
 			}
 		});
-	}).on("click","a[name='action1']",function(){
-		var sql = $("textarea[name='sql']",mainDiv).val();
+	};
+	var initLine = function(sql){
 		$.ajax({
 			url:"/query/list",
 			data:{"sql":sql},
 			dataType:"json",
 			type:"get",
 			success:function(data){
+				console.log(data)
 				Highcharts.chart('container', {
 				    chart: {
 				        type: 'line'
 				    },
 				    title: {
-				        text: '注册统计'
+				        text: data.title
 				    },
 				    subtitle: {
-				        text: 'Source: 来自数据库的统计'
+				        text: 'Source: '+data.subTitle
 				    },
 				    xAxis: {
 				        categories: data.category,
 				        title: {
-				            text: '日期'
+				            text: data.xTitle
 				        }
 				    },
 				    yAxis: {
 				        title: {
-				            text: '注册人数'
+				            text: data.yTitle
 				        }
 				    },
 				    plotOptions: {
@@ -77,15 +77,29 @@ $(function(){
 				});
 			}
 		});
+	}
+	mainDiv.off().on("click","a[name='action']",function(){
+		var type = $("input[name='type']:checked",mainDiv).val();
+		var sql = $("textarea[name='sql']",mainDiv).val();
+		if(type==1){
+			$("div.list",mainDiv).show();
+			$("#container").hide();
+			initGrid1(sql);
+		}else{
+			$("div.list",mainDiv).hide();
+			$("#container").show();
+			initLine(sql);
+		}
+	}).on("change","input[name='type']",function(){
+		$("a[name='action']",mainDiv).trigger("click");
 	});
 	function initGrid(columnArr){
-		$("div.list",mainDiv).height(mainDiv.height()-$("div.search_form",mainDiv).height()-2);
+		$("div.list",mainDiv).height(mainDiv.height()-$("div.search_form",mainDiv).height()-42);
 		var sql = $("textarea[name='sql']",mainDiv).val();
 		var jsonData = {};
 		jsonData.sql = sql;
 		$.EasyUI.DataGrid({
 			gridId:mainDivList,
-			/*striped:true,*/
 			url: "/query/list",
 			queryParams: jsonData,//鍏抽敭涔嬪
 			fitColumns: true,
