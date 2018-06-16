@@ -316,3 +316,58 @@ var form2js = (function()
 	}
 	return form2js;
 })();
+(function($){
+	$.datagrid = function(){};
+	$.datagrid.getSelectRow = function(options){
+		var defaultOptions = {
+			success:function(){},
+			selectRow:function(){},
+			nullInfo:"请选择一条数据",
+			moreInfo:"只能选择一条数据",
+			gridId:"",
+			field:""
+		};
+		options = $.extend(defaultOptions, options || {});
+		if(options.gridId.length>0){
+			var rows = options.gridId.datagrid('getSelections');
+			if(rows.length==1){
+				var data = eval("rows[0]."+options.field);
+				options.success(data, rows[0]);
+				options.selectRow(rows[0]);
+			}else if(rows.length>1){
+				$.EasyUI.message(options.moreInfo);
+			}else{
+				$.EasyUI.message(options.nullInfo);
+			}
+		}else{
+			$.EasyUI.message("datagrid ID为空");
+		}
+	};
+	$.datagrid.getSelectRows = function(options){
+		var defaultOptions = {
+			success:function(){},
+			nullInfo:"数据为空",
+			gridId:"",
+			field:""
+		};
+		options = $.extend(defaultOptions, options || {});
+		if(options.gridId.length>0){
+			var rows = options.gridId.datagrid('getSelections');
+			if(rows.length>0){
+				var data = [];
+				$.each(rows,function(index,row){
+					if(options.field==""){
+						data.push(eval(row));
+					}else{
+						data.push(eval("row."+options.field));
+					}
+				});
+				options.success(data);
+			}else{
+				$.EasyUI.message(options.nullInfo);
+			}
+		}else{
+			$.EasyUI.message("datagrid ID不存在");
+		}
+	};
+})(jQuery);

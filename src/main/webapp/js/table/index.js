@@ -57,6 +57,25 @@ $(function(){
 			height:500,
 			title:"添加表"+jsonData.tableName+"数据"
 		});
+	}).on("click","a[name='update']",function(){
+		var jsonData=$("div.search_form",mainDiv).toJSON();
+		$.datagrid.getSelectRow({
+			gridId:mainDivList,
+			field:priKey,
+			success:function(value,row){
+				jsonData.priKey = priKey;
+				jsonData.priValue = value;
+				console.log(jsonData)
+				$.EasyUI.Window({
+					url:"/table/update",
+					data:jsonData,
+					type:"get",
+					width:800,
+					height:500,
+					title:"修改表"+jsonData.tableName+"\""+priKey+"="+value+"\"的"+"数据"
+				});
+			}
+		});
 	}).on("click","a[name='export']",function(){
 		var jsonData=$("div.search_form",mainDiv).toJSON();
 		console.log(jsonData);

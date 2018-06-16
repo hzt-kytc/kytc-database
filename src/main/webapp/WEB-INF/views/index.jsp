@@ -21,7 +21,14 @@
 	<link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet" type="text/css" />
 </head>
 	<body class="easyui-layout" id="database_main_div">
-		<div data-options="region:'north',border:false" style="height:60px;background:#B3DFDA;padding:10px">north region</div>
+		<div data-options="region:'north',border:false" style="height:60px;background:#B3DFDA;padding:0px;text-align:center;">
+			<div style="height:60px;text-align:center;">
+				<div style="position:absolute;left:50%;margin-left:-65px;">
+					<img style="width:60px;float:left;" alt="" src="${pageContext.request.contextPath}/image/database.png">
+					<span style="float:left;display:block;height:60px;line-height:60px;">数据库管理</span>
+				</div>
+			</div>
+		</div>
 		<div data-options="region:'west',split:true,title:'数据库'" style="width:250px;">
 			<jsp:include page="menu.jsp"></jsp:include>
 		</div>

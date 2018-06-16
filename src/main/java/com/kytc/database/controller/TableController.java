@@ -79,6 +79,32 @@ public class TableController {
 		model.addAttribute("result", page);
 		return ROOT + "add";
 	}
+	@RequestMapping(value="update",method=RequestMethod.GET)
+	public String updateGet(String database, String tableName, String priKey, String priValue, Model model){
+		System.out.println(database+"   "+tableName+"   "+priKey+"  ==  "+priValue);
+		model.addAttribute("database", database);
+		model.addAttribute("tableName", tableName);
+		model.addAttribute("_pri_key_", priKey);
+		model.addAttribute("_pri_value_", priValue);
+		PageDTO<ColumnDTO> page = columnServiceImpl.list(database, tableName);
+		DatabaseUtils.init(page, tableName);
+		model.addAttribute("column", page);
+		model.addAttribute("result", tableServiceImpl.dataDetail(database, tableName, priKey, priValue));
+		return ROOT + "update";
+	}
+	@RequestMapping(value="update",method=RequestMethod.POST)
+	@ResponseBody
+	public ResultDTO<String> update(HttpServletRequest request){
+		Map<String,Object> map = getRequestMap(request);
+		System.out.println(map);
+		PageDTO<ColumnDTO> page = columnServiceImpl.list(""+map.get("database"), ""+map.get("tableName"));
+		for(ColumnDTO dto:page.getRows()){
+			if(dto.getColumnName().trim().equals("gmt_modified")){
+				map.put(dto.getColumnName(), new Date());
+			}
+		}
+		return tableServiceImpl.updateData(map);
+	}
 	private Map<String,Object> getRequestMap(HttpServletRequest request){
 		Enumeration<String> keyEnum = request.getParameterNames();
 		Map<String,Object> map = new HashMap<String,Object>();

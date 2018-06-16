@@ -6,7 +6,7 @@
 <div id="database_query_main_div" style="width:100%;height:100%;">
 	<div class="search_form" style="width:100%;height:150px;float:left;">
 		<div style="float:left;width:80%;">
-			<textarea name="sql" rows="5" cols="3" class="textbox" style="width:100%;height:150px;">select DATE_FORMAT(gmt_create,'%Y-%m-%d') as xTitle,url as category,'日期' as xList,count(1) as value,'全民记仇' as title,'调用次数' as yTitle,'全民记仇数据统计' as subTitle from tb_operate_log where 1=1 and url in ('/match/make','/match/new') GROUP BY DATE_FORMAT(gmt_create,'%Y-%m-%d'),url ORDER BY DATE_FORMAT(gmt_create,'%Y-%m-%d') desc</textarea>
+			<textarea name="sql" rows="5" cols="3" wrap="hard" class="textbox" style="width:100%;height:150px;">select DATE_FORMAT(gmt_create,'%Y-%m-%d') as xTitle,url as category,'日期' as xList,count(1) as value,'全民记仇' as title,'调用次数' as yTitle,'全民记仇数据统计' as subTitle from tb_operate_log where 1=1 and url in ('/match/make','/match/new') GROUP BY DATE_FORMAT(gmt_create,'%Y-%m-%d'),url ORDER BY DATE_FORMAT(gmt_create,'%Y-%m-%d') desc</textarea>
 		</div>
 		<div style="float:left;margin-left:20px;">
 			<br/>
