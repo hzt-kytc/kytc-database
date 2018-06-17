@@ -20,6 +20,8 @@ public class QueryController {
 	private String ROOT = "/query/";
 	@Resource(name="queryServiceImpl")
 	private QueryService queryServiceImpl;
+	@Resource(name="queryQueryServiceImpl")
+	private com.kytc.database.service.query.QueryService queryQueryServiceImpl;
 	@RequestMapping(value="list",method=RequestMethod.POST)
 	@ResponseBody
 	public PageDTO<Map<String,Object>> list(String sql,Integer page,Integer rows){
@@ -36,7 +38,17 @@ public class QueryController {
 		return queryServiceImpl.listOne(sql);
 	}
 	@RequestMapping(value="index")
-	public String index(String database, String tableName, Model model){
+	public String index(Integer id,Model model){
+		if(id!=null){
+			model.addAttribute("result", queryQueryServiceImpl.detail(id));
+		}
 		return ROOT + "index";
+	}
+	@RequestMapping(value="add",method=RequestMethod.GET)
+	public String add(Integer id,Model model){
+		if(id!=null){
+			model.addAttribute("result", queryQueryServiceImpl.detail(id));
+		}
+		return ROOT + "add";
 	}
 }

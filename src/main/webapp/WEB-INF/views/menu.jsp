@@ -24,3 +24,7 @@
 <div id="mm" class="easyui-menu" style="width:120px;">
 	<div name="add" data-options="iconCls:'icon-add'">新建</div>
 </div>
+<div id="database_table_right_main_div" class="easyui-menu" style="width:120px;">
+	<div name="open" data-options="iconCls:'icon-open'">打开</div>
+	<div name="detail" data-options="iconCls:'icon-detail'">查看表详情</div>
+</div>

@@ -38,7 +38,6 @@ $(function(){
 	columnArr.push(columnArr1);
 	mainDiv.on("click","a[name='detail']",function(){
 		var jsonData=$("div.search_form",mainDiv).toJSON();
-		console.log(jsonData)
 		$.EasyUI.Window({
 			url:"/table/detail",
 			data:jsonData,

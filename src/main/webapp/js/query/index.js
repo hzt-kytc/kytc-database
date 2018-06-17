@@ -43,7 +43,6 @@ $(function(){
 			dataType:"json",
 			type:"get",
 			success:function(data){
-				console.log(data)
 				Highcharts.chart('container', {
 				    chart: {
 				        type: 'line'
@@ -77,7 +76,55 @@ $(function(){
 				});
 			}
 		});
-	}
+	};
+	var initColumn = function(sql){
+		$.ajax({
+			url:"/query/list",
+			data:{"sql":sql},
+			dataType:"json",
+			type:"get",
+			success:function(data){
+				Highcharts.chart('container', {
+				    chart: {
+				        type: 'column'
+				    },
+				    title: {
+				        text: data.title
+				    },
+				    subtitle: {
+				        text: 'Source: '+data.subTitle
+				    },
+				    xAxis: {
+				    	categories: data.category,
+				        title: {
+				            text: data.xTitle
+				        },
+				        crosshair: true
+				    },
+				    yAxis: {
+				    	title: {
+				            text: data.yTitle
+				        }
+				    },
+				    tooltip: {
+				        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+				        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+				            '<td style="padding:0"><b>{point.y} </b></td></tr>',
+				        footerFormat: '</table>',
+				        shared: true,
+				        useHTML: true
+				    },
+				    plotOptions: {
+				        column: {
+				            pointPadding: 0.2,
+				            borderWidth: 0
+				        }
+				    },
+				    series: data.series
+				});
+			}
+		});
+	};
 	mainDiv.off().on("click","a[name='action']",function(){
 		var type = $("input[name='type']:checked",mainDiv).val();
 		var sql = $("textarea[name='sql']",mainDiv).val();
@@ -85,13 +132,27 @@ $(function(){
 			$("div.list",mainDiv).show();
 			$("#container").hide();
 			initGrid1(sql);
-		}else{
+		}else if(type==3){
+			$("div.list",mainDiv).hide();
+			$("#container").show();
+			initColumn(sql);
+		}else if(type==2){
 			$("div.list",mainDiv).hide();
 			$("#container").show();
 			initLine(sql);
 		}
 	}).on("change","input[name='type']",function(){
 		$("a[name='action']",mainDiv).trigger("click");
+	}).on("click","a[name='saveAs']",function(){
+		var id = $("input[name='id']",mainDiv).val();
+		$.EasyUI.Window({
+			url:"/query/query/add",
+			data:{"id":id},
+			type:"get",
+			width:800,
+			height:500,
+			title:"保存"
+		});
 	});
 	function initGrid(columnArr){
 		$("div.list",mainDiv).height(mainDiv.height()-$("div.search_form",mainDiv).height()-42);
