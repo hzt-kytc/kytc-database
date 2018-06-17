@@ -88,6 +88,7 @@
 		<a name="reset" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" style="width:80px">重置</a>
 		<a name="add" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px">添加</a>
 		<a name="update" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">修改</a>
+		<a name="delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" style="width:80px">删除</a>
 	</div>
 	<div class="list" style="overflow-y:auto;">
 		<div class="data" style="width:100%;"></div>

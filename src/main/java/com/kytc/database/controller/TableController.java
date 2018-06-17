@@ -129,6 +129,12 @@ public class TableController {
 		}
 		return tableServiceImpl.addData(map);
 	}
+	@RequestMapping(value="delete",method=RequestMethod.POST)
+	@ResponseBody
+	public ResultDTO<String> delete(String database, String tableName, String priKey, String priValue){
+		System.out.println(database+"   "+tableName+"   "+priKey+"  ==  "+priValue);
+		return tableServiceImpl.delete(database, tableName, priKey, priValue);
+	}
 	@RequestMapping(value="column",method=RequestMethod.POST)
 	@ResponseBody
 	public PageDTO<ColumnDTO> column(String database, String tableName){

@@ -65,7 +65,6 @@ $(function(){
 			success:function(value,row){
 				jsonData.priKey = priKey;
 				jsonData.priValue = value;
-				console.log(jsonData)
 				$.EasyUI.Window({
 					url:"/table/update",
 					data:jsonData,
@@ -76,16 +75,46 @@ $(function(){
 				});
 			}
 		});
+	}).on("click","a[name='delete']",function(){
+		var jsonData=$("div.search_form",mainDiv).toJSON();
+		$.datagrid.getSelectRow({
+			gridId:mainDivList,
+			field:priKey,
+			success:function(value,row){
+				$.EasyUI.message("确定要删除该条数据吗","cf",function(){
+					jsonData.priKey = priKey;
+					jsonData.priValue = value;
+					console.log(jsonData)
+					$.ajax({
+						url:"/table/delete",
+						type:"post",
+						data:jsonData,
+						dataType:"json",
+						success:function(data){
+							if(data.status){
+								$.EasyUI.message("删除成功","s");
+								$("a[name='search']",mainDiv).trigger("click");
+							}else{
+								$.EasyUI.message(data.error_reason,"e");
+							}
+						}
+					});
+				});
+			}
+		});
 	}).on("click","a[name='export']",function(){
 		var jsonData=$("div.search_form",mainDiv).toJSON();
-		console.log(jsonData);
 		$.ajax({
 			url:"/table/export",
 			type:"post",
 			data:jsonData,
 			dataType:"json",
 			success:function(data){
-				console.log(data);
+				if(data.status){
+					$.EasyUI.message("导出成功","s");
+				}else{
+					$.EasyUI.message(data.error_reason,"e");
+				}
 			}
 		});
 	}).on("click","a[name='search']",function(){
